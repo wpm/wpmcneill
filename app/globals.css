@@ -1,0 +1,83 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  line-height: 1.6;
+  color: #2c2825;
+  background: #faf8f5;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-blend-mode: soft-light;
+  background-size: 200px 200px;
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+main {
+  max-width: 600px;
+  margin: 4rem auto;
+  border: 1px solid #d5cec5;
+  padding: 3rem;
+  position: relative;
+}
+
+.ornament {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+}
+
+.ornament svg {
+  width: 100%;
+  height: 100%;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.tagline {
+  font-style: italic;
+  color: #6b635b;
+  margin-bottom: 2rem;
+}
+
+p {
+  margin-bottom: 1.5rem;
+}
+
+strong {
+  font-weight: 600;
+}
+
+.links {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e0d9;
+  text-align: center;
+}
+
+.links a {
+  color: #5c524a;
+  text-decoration: none;
+  margin-right: 1.5rem;
+  display: inline-block;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+a {
+  color: #5c524a;
+}
+
+a:hover {
+  text-decoration: underline;
+}
