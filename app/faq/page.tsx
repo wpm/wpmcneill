@@ -7,17 +7,7 @@ export const metadata = {
 
 export default function FAQPage() {
   return (
-    <main
-      style={{
-        position: 'fixed',
-        inset: '2.4rem',
-        margin: 'auto',
-        maxWidth: '720px',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '1.8rem',
-      }}
-    >
+    <main style={{ display: 'flex', flexDirection: 'column', padding: '1.8rem' }}>
       <h1 style={{ marginBottom: '0.25rem' }}>FAQ</h1>
       <p style={{ marginBottom: '1rem', fontStyle: 'italic', color: '#6b635b' }}>Ask Steph, Bill's AI assistant</p>
 
