@@ -19,23 +19,20 @@ export function ChatInterface() {
 
   const SESSION_KEY = 'steph-chat-messages'
 
-  const savedMessages =
-    typeof window !== 'undefined'
-      ? (() => {
-          try {
-            return JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null')
-          } catch {
-            return null
-          }
-        })()
-      : null
-
-  const { messages, sendMessage, status } = useChat({
+  const { messages, setMessages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       api: '/api/chat',
     }),
-    initialMessages: savedMessages ?? undefined,
   })
+
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem(SESSION_KEY)
+      if (saved) setMessages(JSON.parse(saved))
+    } catch {
+      // ignore
+    }
+  }, [])
 
   useEffect(() => {
     if (messages.length > 0) {
