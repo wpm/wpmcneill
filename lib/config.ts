@@ -46,14 +46,14 @@ export const config = {
   temperature: getEnvNumber('STEPH_TEMPERATURE', 7) / 10, // Divided by 10 to allow 0.7 as "7"
 
   /**
-   * Maximum tokens in the response.
+   * Maximum tokens in the response (AI SDK 6 uses maxOutputTokens).
    * - 512: Short responses
    * - 1024: Medium responses (default)
    * - 2048: Longer, more detailed responses
    *
-   * Environment variable: STEPH_MAX_TOKENS
+   * Environment variable: STEPH_MAX_OUTPUT_TOKENS
    */
-  maxTokens: getEnvNumber('STEPH_MAX_TOKENS', 1024),
+  maxOutputTokens: getEnvNumber('STEPH_MAX_OUTPUT_TOKENS', 1024),
 
   // ============================================
   // Rate Limiting
