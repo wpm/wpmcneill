@@ -1,12 +1,12 @@
 import { embed } from 'ai'
-import { createOpenAI } from '@ai-sdk/openai'
+import { createVoyage } from 'voyage-ai-provider'
 import { createClient } from '@/lib/supabase/server'
 
 const MAX_POSTS = 3
 const MAX_CONTENT_CHARS = 2000
 const SIMILARITY_THRESHOLD = 0.7
 
-const openai = createOpenAI({ apiKey: process.env.OPENAI_API_KEY })
+const voyage = createVoyage({ apiKey: process.env.VOYAGE_API_KEY })
 
 interface Post {
   id: string
@@ -23,7 +23,7 @@ interface Post {
 export async function retrieveRelevantPosts(query: string): Promise<string | null> {
   try {
     const { embedding } = await embed({
-      model: openai.embedding('text-embedding-3-small'),
+      model: voyage.textEmbeddingModel('voyage-3'),
       value: query,
     })
 
