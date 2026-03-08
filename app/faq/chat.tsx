@@ -9,6 +9,7 @@ import styles from './chat.module.css'
 export function ChatInterface() {
   const [input, setInput] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const bottomRef = useRef<HTMLDivElement>(null)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value)
@@ -40,6 +41,10 @@ export function ChatInterface() {
     }
   }, [messages])
 
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages, status])
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!input.trim()) return
@@ -52,7 +57,7 @@ export function ChatInterface() {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-      if (!input.trim() || status === 'streaming') return
+      if (!input.trim() || status === 'submitted' || status === 'streaming') return
       sendMessage({ text: input })
       setInput('')
       if (textareaRef.current) textareaRef.current.style.height = 'auto'
@@ -87,7 +92,7 @@ export function ChatInterface() {
           </div>
         ))}
 
-        {status === 'streaming' && messages[messages.length - 1]?.role !== 'assistant' && (
+        {(status === 'submitted' || status === 'streaming') && messages[messages.length - 1]?.role !== 'assistant' && (
           <div className={`${styles.message} ${styles.assistantMessage}`}>
             <div className={styles.messageContent}>
               <div className={styles.thinking}>
@@ -98,6 +103,7 @@ export function ChatInterface() {
             </div>
           </div>
         )}
+        <div ref={bottomRef} />
       </div>
 
       <form onSubmit={handleSubmit} className={styles.inputForm}>
@@ -111,7 +117,11 @@ export function ChatInterface() {
           className={styles.input}
           rows={1}
         />
-        <button type="submit" disabled={status === 'streaming' || !input.trim()} className={styles.button}>
+        <button
+          type="submit"
+          disabled={status === 'submitted' || status === 'streaming' || !input.trim()}
+          className={styles.button}
+        >
           Send
         </button>
       </form>
