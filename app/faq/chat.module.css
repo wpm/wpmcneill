@@ -12,7 +12,7 @@
   flex-direction: column;
   gap: 1.5rem;
   padding-bottom: 1.5rem;
-  min-height: 300px;
+  min-height: 0;
 }
 
 .initialMessage {
@@ -61,8 +61,87 @@
 }
 
 .thinking {
-  font-style: italic;
-  color: #6b635b;
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0.25rem 0;
+}
+
+.thinkingDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #9e8e82;
+  animation: thinkingPulse 1.2s ease-in-out infinite;
+}
+
+.thinkingDot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.thinkingDot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes thinkingPulse {
+  0%,
+  80%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.85);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.messageContent :global(p) {
+  margin: 0 0 0.75em;
+}
+
+.messageContent :global(p:last-child) {
+  margin-bottom: 0;
+}
+
+.messageContent :global(ul),
+.messageContent :global(ol) {
+  margin: 0 0 0.75em;
+  padding-left: 1.5em;
+}
+
+.messageContent :global(li) {
+  margin-bottom: 0.25em;
+}
+
+.assistantMessage .messageContent :global(code) {
+  font-family: monospace;
+  background: #e5ddd6;
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+.assistantMessage .messageContent :global(pre) {
+  background: #e5ddd6;
+  padding: 0.75em 1em;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 0 0 0.75em;
+}
+
+.assistantMessage .messageContent :global(pre code) {
+  background: none;
+  padding: 0;
+}
+
+.messageContent :global(strong) {
+  font-weight: 600;
+}
+
+.assistantMessage .messageContent :global(a) {
+  color: #5c524a;
+  text-decoration: underline;
 }
 
 .inputForm {
@@ -81,6 +160,13 @@
   font-size: 1rem;
   color: #2c2825;
   background: #faf8f5;
+  resize: none;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  min-height: 2.75rem;
+  max-height: 12rem;
+  overflow-y: auto;
+  line-height: 1.5;
 }
 
 .input:focus {

@@ -7,11 +7,11 @@ export const metadata = {
 
 export default function FAQPage() {
   return (
-    <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <main style={{ height: 'calc(100vh - 12rem)', display: 'flex', flexDirection: 'column' }}>
       <h1 style={{ marginBottom: '0.25rem' }}>FAQ</h1>
       <p style={{ marginBottom: '2rem', fontStyle: 'italic', color: '#6b635b' }}>Ask Steph, Bill's AI assistant</p>
 
-      <div style={{ flex: 1, minHeight: '400px' }}>
+      <div style={{ flex: 1, minHeight: 0 }}>
         <ChatInterface />
       </div>
 
