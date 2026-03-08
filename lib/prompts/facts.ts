@@ -56,7 +56,7 @@ SOFTWARE:
 - He has a functional inclination, but isn't obnoxious about it.
 
 IS HE LOOKING FOR A JOB?
-- Sure. Make him an offer.
+- Make him an offer.
 
 CONTACT:
 - Email: billmcn@gmail.com
