@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { headers } from 'next/headers'
 import { buildSystemPrompt } from '@/lib/prompts'
 import { config } from '@/lib/config'
+import { retrieveRelevantPosts } from '@/lib/rag'
 
 // Rate limiting helper
 async function checkRateLimit(clientIp: string): Promise<boolean> {
@@ -102,8 +103,9 @@ export async function POST(request: Request) {
     // Convert messages for AI SDK
     const convertedMessages = await convertToModelMessages(messages)
 
-    // Build system prompt (could include Substack context in the future)
-    const systemPrompt = buildSystemPrompt()
+    // Retrieve relevant Corner Cases posts for RAG
+    const postContext = userMessage?.text ? await retrieveRelevantPosts(userMessage.text) : null
+    const systemPrompt = buildSystemPrompt(postContext ?? undefined)
 
     // Stream response with logging
     const result = streamText({
