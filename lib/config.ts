@@ -1,8 +1,25 @@
 /**
  * Steph Configuration
  * 
- * Edit these values to customize the chatbot behavior.
+ * Configure via environment variables. Supports different settings for preview vs production.
+ * See .env.example for all available options.
  */
+
+// Helper to parse environment variables
+const getEnvString = (key: string, defaultValue: string): string => {
+  return process.env[key] || defaultValue
+}
+
+const getEnvNumber = (key: string, defaultValue: number): number => {
+  const value = process.env[key]
+  return value ? parseInt(value, 10) : defaultValue
+}
+
+const getEnvBoolean = (key: string, defaultValue: boolean): boolean => {
+  const value = process.env[key]
+  if (value === undefined) return defaultValue
+  return value === 'true' || value === '1' || value === 'yes'
+}
 
 export const config = {
   // ============================================
@@ -19,24 +36,30 @@ export const config = {
    * - 'anthropic/claude-sonnet-4-20250514' - Claude Sonnet
    * - 'anthropic/claude-opus-4.6'          - Claude Opus (most capable)
    * - 'google/gemini-3-flash'  - Fast Google model
+   * 
+   * Environment variable: STEPH_MODEL
    */
-  model: 'openai/gpt-4o-mini',
+  model: getEnvString('STEPH_MODEL', 'openai/gpt-4o-mini'),
 
   /**
    * Temperature controls randomness (0.0 - 2.0)
    * - Lower (0.0-0.3): More focused, deterministic
    * - Medium (0.5-0.7): Balanced (recommended)
    * - Higher (0.8-1.2): More creative, varied
+   * 
+   * Environment variable: STEPH_TEMPERATURE
    */
-  temperature: 0.7,
+  temperature: getEnvNumber('STEPH_TEMPERATURE', 7) / 10, // Divided by 10 to allow 0.7 as "7"
 
   /**
    * Maximum tokens in the response.
    * - 512: Short responses
    * - 1024: Medium responses (default)
    * - 2048: Longer, more detailed responses
+   * 
+   * Environment variable: STEPH_MAX_TOKENS
    */
-  maxTokens: 1024,
+  maxTokens: getEnvNumber('STEPH_MAX_TOKENS', 1024),
 
   // ============================================
   // Rate Limiting
@@ -47,11 +70,17 @@ export const config = {
    * Prevents abuse and controls costs.
    */
   rateLimit: {
-    /** Number of requests allowed */
-    maxRequests: 10,
+    /** 
+     * Number of requests allowed per window
+     * Environment variable: STEPH_RATE_LIMIT_MAX
+     */
+    maxRequests: getEnvNumber('STEPH_RATE_LIMIT_MAX', 10),
     
-    /** Time window in seconds */
-    windowSeconds: 60,
+    /** 
+     * Time window in seconds
+     * Environment variable: STEPH_RATE_LIMIT_WINDOW_SECONDS
+     */
+    windowSeconds: getEnvNumber('STEPH_RATE_LIMIT_WINDOW_SECONDS', 60),
   },
 
   // ============================================
@@ -61,7 +90,8 @@ export const config = {
   /**
    * How long before a conversation is considered "new" (in milliseconds).
    * Messages within this window are grouped into the same conversation.
-   * Default: 1 hour (3600000ms)
+   * 
+   * Environment variable: STEPH_CONVERSATION_TIMEOUT_MS
    */
-  conversationTimeoutMs: 3600000,
+  conversationTimeoutMs: getEnvNumber('STEPH_CONVERSATION_TIMEOUT_MS', 3600000),
 }
