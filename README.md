@@ -55,20 +55,19 @@ Steph can reference your Substack posts. To import them:
 ### 1. Export from Substack
 
 1. Go to your Substack dashboard
-2. Settings → Export
-3. Download the JSON export (not HTML)
-4. Save the zip file
+2. Settings → Export → Download
+3. Save the ZIP file (contains `posts.csv` and `posts/` directory with HTML files)
 
 ### 2. Run the Import Script
 
 ```bash
-# Extract the zip, then run:
-node scripts/import-substack.js path/to/posts.json
+node scripts/import-substack.js path/to/your-substack-export.zip
 ```
 
 The script:
-- Parses all posts from the export
-- Generates embeddings for semantic search
+- Extracts the ZIP to a temp directory
+- Parses post metadata from `posts.csv`
+- Reads full content from HTML files in `posts/`
 - Stores everything in Supabase
 
 ### 3. Re-import When Needed
