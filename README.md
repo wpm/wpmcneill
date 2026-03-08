@@ -5,7 +5,7 @@ Personal website with Steph, an AI FAQ assistant.
 ## Quick Start
 
 1. Connect Supabase integration in v0
-2. Run the database migration (`scripts/001_create_tables.sql`)
+2. Run `supabase db push` to apply the schema
 3. Deploy
 
 ## Configuration
@@ -61,7 +61,7 @@ Steph can reference your Substack posts. To import them:
 ### 2. Run the Import Script
 
 ```bash
-node scripts/import-substack.js path/to/your-substack-export.zip
+npm run import-substack path/to/your-substack-export.zip
 ```
 
 The script:

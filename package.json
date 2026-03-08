@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "import-substack": "env $(grep -v '^#' .env.local | grep '=' | sed 's/\"//g' | xargs) node scripts/import-substack.js"
   },
   "dependencies": {
     "next": "^16.0.0",
