@@ -14,6 +14,10 @@ export default function FAQPage() {
       <div style={{ flex: 1, minHeight: '400px' }}>
         <ChatInterface />
       </div>
+
+      <div className="links" style={{ marginTop: '2rem' }}>
+        <a href="/">Home</a>
+      </div>
     </main>
   )
 }
