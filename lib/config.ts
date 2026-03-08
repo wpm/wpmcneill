@@ -53,7 +53,7 @@ export const config = {
    *
    * Environment variable: STEPH_MAX_TOKENS
    */
-  maxTokens: getEnvNumber('STEPH_MAX_TOKENS', 1024),
+  maxOutputTokens: getEnvNumber('STEPH_MAX_OUTPUT_TOKENS', 1024),
 
   // ============================================
   // Rate Limiting
