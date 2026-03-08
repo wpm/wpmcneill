@@ -30,8 +30,8 @@ async function checkRateLimit(clientIp: string): Promise<boolean> {
 }
 
 // Get client IP
-function getClientIp(request: Request): string {
-  const headersList = headers()
+async function getClientIp(request: Request): Promise<string> {
+  const headersList = await headers()
   return (
     headersList.get('x-forwarded-for')?.split(',')[0] ||
     headersList.get('x-real-ip') ||
@@ -41,7 +41,7 @@ function getClientIp(request: Request): string {
 
 export async function POST(request: Request) {
   try {
-    const clientIp = getClientIp(request)
+    const clientIp = await getClientIp(request)
 
     // Check rate limit
     const isAllowed = await checkRateLimit(clientIp)
