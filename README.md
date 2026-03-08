@@ -63,7 +63,7 @@ Steph can reference your Substack posts. To import them:
 ### 2. Run the Import Script
 
 ```bash
-npm run import-substack path/to/your-substack-export.zip
+pnpm run import-substack path/to/your-substack-export.zip
 ```
 
 The script:
