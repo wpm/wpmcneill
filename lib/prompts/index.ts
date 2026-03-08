@@ -6,20 +6,18 @@ import { facts } from './facts'
 import { guardrails } from './guardrails'
 
 export function buildSystemPrompt(contextFromPosts?: string): string {
-  const sections = [
-    personality,
-    facts,
-    guardrails,
-  ]
+  const sections = [personality, facts, guardrails]
 
   // If we have relevant Substack content, include it
   if (contextFromPosts) {
-    sections.push(`
+    sections.push(
+      `
 RELEVANT CONTENT FROM BILL'S SUBSTACK:
 ${contextFromPosts}
 
 When answering, reference these posts naturally if relevant. Include links when citing specific articles.
-`.trim())
+`.trim()
+    )
   }
 
   return sections.join('\n\n---\n\n')

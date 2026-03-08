@@ -1,143 +1,152 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>W.P. McNeill</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: "EB Garamond", Georgia, serif;
-            line-height: 1.6;
-            color: #2C2825;
-            background: #FAF8F5;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            background-blend-mode: soft-light;
-            background-size: 200px 200px;
-            padding: 2rem;
-        }
+      body {
+        font-family: 'EB Garamond', Georgia, serif;
+        line-height: 1.6;
+        color: #2c2825;
+        background: #faf8f5;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        background-blend-mode: soft-light;
+        background-size: 200px 200px;
+        padding: 2rem;
+      }
 
-        main {
-            max-width: 600px;
-            margin: 4rem auto;
-            border: 1px solid #D5CEC5;
-            padding: 3rem;
-            position: relative;
-        }
+      main {
+        max-width: 600px;
+        margin: 4rem auto;
+        border: 1px solid #d5cec5;
+        padding: 3rem;
+        position: relative;
+      }
 
-        .ornament {
-            position: absolute;
-            top: -12px;
-            right: -12px;
-            width: 24px;
-            height: 24px;
-        }
+      .ornament {
+        position: absolute;
+        top: -12px;
+        right: -12px;
+        width: 24px;
+        height: 24px;
+      }
 
-        .ornament svg {
-            width: 100%;
-            height: 100%;
-        }
+      .ornament svg {
+        width: 100%;
+        height: 100%;
+      }
 
-        h1 {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
+      h1 {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+      }
 
-        .tagline {
-            font-style: italic;
-            color: #6B635B;
-            margin-bottom: 2rem;
-        }
+      .tagline {
+        font-style: italic;
+        color: #6b635b;
+        margin-bottom: 2rem;
+      }
 
-        p {
-            margin-bottom: 1.5rem;
-        }
+      p {
+        margin-bottom: 1.5rem;
+      }
 
-        strong {
-            font-weight: 600;
-        }
+      strong {
+        font-weight: 600;
+      }
 
-        .links {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #E5E0D9;
-            text-align: center;
-        }
+      .links {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e5e0d9;
+        text-align: center;
+      }
 
-        .links a {
-            color: #5C524A;
-            text-decoration: none;
-            margin-right: 1.5rem;
-        }
+      .links a {
+        color: #5c524a;
+        text-decoration: none;
+        margin-right: 1.5rem;
+      }
 
-        .links a:hover {
-            text-decoration: underline;
-        }
+      .links a:hover {
+        text-decoration: underline;
+      }
 
-        a {
-            color: #5C524A;
-        }
+      a {
+        color: #5c524a;
+      }
 
-        a:hover {
-            text-decoration: underline;
-        }
+      a:hover {
+        text-decoration: underline;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <main>
-        <div class="ornament">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#C4B5A6" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="2.5"/>
-                <path d="M12 9.5 Q14 5 12 2 Q10 5 12 9.5"/>
-                <path d="M14.5 12 Q19 14 22 12 Q19 10 14.5 12"/>
-                <path d="M12 14.5 Q14 19 12 22 Q10 19 12 14.5"/>
-                <path d="M9.5 12 Q5 14 2 12 Q5 10 9.5 12"/>
-                <path d="M13.8 10.2 Q17 7 19 4.5 Q16 7.5 13.8 10.2"/>
-                <path d="M10.2 10.2 Q7 7 5 4.5 Q8 7.5 10.2 10.2"/>
-                <path d="M13.8 13.8 Q17 17 19 19.5 Q16 16.5 13.8 13.8"/>
-                <path d="M10.2 13.8 Q7 17 5 19.5 Q8 16.5 10.2 13.8"/>
-            </svg>
-        </div>
-        <h1>W.P. McNeill</h1>
-        <p class="tagline">Big picture, dirty hands.</p>
+      <div class="ornament">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#C4B5A6"
+          stroke-width="0.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="2.5" />
+          <path d="M12 9.5 Q14 5 12 2 Q10 5 12 9.5" />
+          <path d="M14.5 12 Q19 14 22 12 Q19 10 14.5 12" />
+          <path d="M12 14.5 Q14 19 12 22 Q10 19 12 14.5" />
+          <path d="M9.5 12 Q5 14 2 12 Q5 10 9.5 12" />
+          <path d="M13.8 10.2 Q17 7 19 4.5 Q16 7.5 13.8 10.2" />
+          <path d="M10.2 10.2 Q7 7 5 4.5 Q8 7.5 10.2 10.2" />
+          <path d="M13.8 13.8 Q17 17 19 19.5 Q16 16.5 13.8 13.8" />
+          <path d="M10.2 13.8 Q7 17 5 19.5 Q8 16.5 10.2 13.8" />
+        </svg>
+      </div>
+      <h1>W.P. McNeill</h1>
+      <p class="tagline">Big picture, dirty hands.</p>
 
-        <p>
-            I build natural language systems. Linguistics and philosophy inform how I think
-            about them—meaning, context, what these models are doing when they appear to understand.
-        </p>
+      <p>
+        I build natural language systems. Linguistics and philosophy inform how I think about
+        them—meaning, context, what these models are doing when they appear to understand.
+      </p>
 
-        <p>
-            I've spent my career in AI startups, building systems that have to work in the
-            real world. I care about clean code, clear thinking, and understanding the problem
-            before solving it.
-        </p>
+      <p>
+        I've spent my career in AI startups, building systems that have to work in the real world. I
+        care about clean code, clear thinking, and understanding the problem before solving it.
+      </p>
 
-        <p>
-            <strong><a href="https://wpmcneill.substack.com/">Corner Cases</a></strong> is my
-            Substack on AI and language, co-written with Claude—an experiment in collaboration
-            and a place to work through questions that don't fit elsewhere.
-        </p>
+      <p>
+        <strong><a href="https://wpmcneill.substack.com/">Corner Cases</a></strong> is my Substack
+        on AI and language, co-written with Claude—an experiment in collaboration and a place to
+        work through questions that don't fit elsewhere.
+      </p>
 
-        <p>
-            Category theory and the Lean theorem prover are ongoing interests. Formal foundations
-            matter, and they're underexplored in how we think about language and computation.
-        </p>
+      <p>
+        Category theory and the Lean theorem prover are ongoing interests. Formal foundations
+        matter, and they're underexplored in how we think about language and computation.
+      </p>
 
-        <div class="links">
-            <a href="https://wpmcneill.substack.com/">Corner Cases</a>
-            <a href="https://github.com/wpm">GitHub</a>
-            <a href="https://www.linkedin.com/in/williammcneill/">LinkedIn</a>
-            <a href="mailto:billmcn@gmail.com">Email</a>
-        </div>
+      <div class="links">
+        <a href="https://wpmcneill.substack.com/">Corner Cases</a>
+        <a href="https://github.com/wpm">GitHub</a>
+        <a href="https://www.linkedin.com/in/williammcneill/">LinkedIn</a>
+        <a href="mailto:billmcn@gmail.com">Email</a>
+      </div>
     </main>
-</body>
+  </body>
 </html>

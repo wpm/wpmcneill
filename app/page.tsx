@@ -1,6 +1,13 @@
 function Ornament() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="#C4B5A6" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#C4B5A6"
+      strokeWidth="0.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <circle cx="12" cy="12" r="2.5" />
       <path d="M12 9.5 Q14 5 12 2 Q10 5 12 9.5" />
       <path d="M14.5 12 Q19 14 22 12 Q19 10 14.5 12" />
@@ -24,20 +31,21 @@ export default function Home() {
       <p className="tagline">Big picture, dirty hands.</p>
 
       <p>
-        I build natural language systems. Linguistics and philosophy inform how I think
-        about them—meaning, context, what these models are doing when they appear to understand.
+        I build natural language systems. Linguistics and philosophy inform how I think about
+        them—meaning, context, what these models are doing when they appear to understand.
       </p>
 
       <p>
-        I've spent my career in AI startups, building systems that have to work in the
-        real world. I care about clean code, clear thinking, and understanding the problem
-        before solving it.
+        I've spent my career in AI startups, building systems that have to work in the real world. I
+        care about clean code, clear thinking, and understanding the problem before solving it.
       </p>
 
       <p>
-        <strong><a href="https://wpmcneill.substack.com/">Corner Cases</a></strong> is my
-        Substack on AI and language, co-written with Claude—an experiment in collaboration
-        and a place to work through questions that don't fit elsewhere.
+        <strong>
+          <a href="https://wpmcneill.substack.com/">Corner Cases</a>
+        </strong>{' '}
+        is my Substack on AI and language, co-written with Claude—an experiment in collaboration and
+        a place to work through questions that don't fit elsewhere.
       </p>
 
       <p>

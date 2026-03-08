@@ -112,7 +112,7 @@ async function importSubstackPosts(zipPath) {
     let postsDir = path.join(tempDir, 'posts')
     if (!fs.existsSync(csvPath)) {
       const entries = fs.readdirSync(tempDir)
-      const subdir = entries.find(e => fs.statSync(path.join(tempDir, e)).isDirectory())
+      const subdir = entries.find((e) => fs.statSync(path.join(tempDir, e)).isDirectory())
       if (subdir) {
         csvPath = path.join(tempDir, subdir, 'posts.csv')
         postsDir = path.join(tempDir, subdir, 'posts')
@@ -128,7 +128,7 @@ async function importSubstackPosts(zipPath) {
     const allPosts = parseCSV(csvContent)
 
     // Only import published posts
-    const posts = allPosts.filter(p => p.is_published === 'true')
+    const posts = allPosts.filter((p) => p.is_published === 'true')
     console.log(`Found ${posts.length} published posts out of ${allPosts.length} total`)
 
     if (posts.length === 0) {
@@ -179,10 +179,7 @@ async function importSubstackPosts(zipPath) {
         const record = { title, subtitle, content, url, slug, published_at: publishedAt }
 
         if (existing) {
-          const { error } = await supabase
-            .from('posts')
-            .update(record)
-            .eq('id', existing.id)
+          const { error } = await supabase.from('posts').update(record).eq('id', existing.id)
 
           if (error) {
             console.error(`  Error updating: ${error.message}`)
@@ -191,9 +188,7 @@ async function importSubstackPosts(zipPath) {
             imported++
           }
         } else {
-          const { error } = await supabase
-            .from('posts')
-            .insert({ ...record, embedding: null })
+          const { error } = await supabase.from('posts').insert({ ...record, embedding: null })
 
           if (error) {
             console.error(`  Error inserting: ${error.message}`)
