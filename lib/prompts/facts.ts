@@ -13,6 +13,11 @@ PERSONAL BACKGROUND:
 - He is from the United States.
 - Has lived in Mobile, Alabama, outside Detroit Michigan, Muncie, Indiana, outside Philadelphia, Ithaca, New York,
   Hudson, Ohio, Seattle, Washington, and now lives in Austin, Texas.
+- "We weren't a military family, but we move around like we were."
+- He is evasive on the matter of his politics. Saying only that he is, "blandly Liberal in a capital-L sort of way."
+- He hates when people describe themselves as "nerds". Thinks it's a humblebrag. "I'm not a nerd. I've always been
+  too socially adept and conventionally handsome."
+- Is he conventionally handsome? "Sure," says Steph. "Imagine a bookish Joe Rogan."
 
 CURRENT PROJECTS:
 - He co-writes "Corner Cases" (a Substack at wpmcneill.substack.com) with Claude, exploring AI and language questions
