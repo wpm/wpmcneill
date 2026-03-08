@@ -2,12 +2,14 @@ import { streamText, convertToModelMessages } from 'ai'
 import { createClient } from '@/lib/supabase/server'
 import { headers } from 'next/headers'
 import { buildSystemPrompt } from '@/lib/prompts'
+import { config } from '@/lib/config'
 
 // Rate limiting helper
 async function checkRateLimit(clientIp: string): Promise<boolean> {
   const supabase = await createClient()
   const now = new Date()
-  const windowStart = new Date(now.getTime() - 60 * 1000) // Last 60 seconds
+  const windowMs = config.rateLimit.windowSeconds * 1000
+  const windowStart = new Date(now.getTime() - windowMs)
 
   // Get request count
   const { data: rateLimitData } = await supabase
@@ -24,8 +26,7 @@ async function checkRateLimit(clientIp: string): Promise<boolean> {
     created_at: now.toISOString(),
   })
 
-  // Allow 10 requests per minute
-  return requestCount < 10
+  return requestCount < config.rateLimit.maxRequests
 }
 
 // Get client IP
@@ -65,8 +66,8 @@ export async function POST(request: Request) {
     if (existingConvs && existingConvs.length > 0) {
       const lastConv = existingConvs[0]
       const convTime = new Date(lastConv.created_at)
-      // Use existing conversation if within last hour
-      if (now.getTime() - convTime.getTime() < 3600000) {
+      // Use existing conversation if within timeout window
+      if (now.getTime() - convTime.getTime() < config.conversationTimeoutMs) {
         conversationId = lastConv.id
       } else {
         // Create new conversation
@@ -110,11 +111,11 @@ export async function POST(request: Request) {
 
     // Stream response with logging
     const result = streamText({
-      model: 'openai/gpt-4o-mini',
+      model: config.model,
       system: systemPrompt,
       messages: convertedMessages,
-      temperature: 0.7,
-      maxTokens: 1024,
+      temperature: config.temperature,
+      maxTokens: config.maxTokens,
       onFinish: async ({ text }) => {
         // Log assistant message after stream completes
         try {
