@@ -2,23 +2,21 @@
 
 /**
  * Substack Import Script
- * 
+ *
  * Usage: node scripts/import-substack.js <path-to-substack-export.zip>
- * 
+ *
  * To get your Substack export:
  * 1. Go to your Substack dashboard
  * 2. Settings → Export → Download
  * 3. Run this script with the downloaded ZIP file
- * 
+ *
  * The ZIP contains:
  * - posts.csv (metadata for all posts)
- * - posts/ directory (individual posts as HTML files)
- * 
- * This script:
- * - Extracts and parses the ZIP
- * - Reads post metadata from posts.csv
- * - Extracts content from HTML files
- * - Stores them in Supabase for Steph to reference
+ * - posts/ directory (individual posts as HTML files named {post_id}.html)
+ *
+ * Requires environment variables:
+ *   NEXT_PUBLIC_SUPABASE_URL
+ *   NEXT_PUBLIC_SUPABASE_ANON_KEY
  */
 
 const fs = require('fs')
@@ -28,35 +26,53 @@ const { execSync } = require('child_process')
 // Simple HTML to plain text conversion
 function htmlToText(html) {
   return html
-    // Remove script and style tags with content
     .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
     .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
-    // Convert common block elements to newlines
     .replace(/<\/(p|div|h[1-6]|li|tr|br)>/gi, '\n')
     .replace(/<br\s*\/?>/gi, '\n')
-    // Remove remaining HTML tags
     .replace(/<[^>]+>/g, '')
-    // Decode common HTML entities
     .replace(/&nbsp;/g, ' ')
     .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
-    // Clean up whitespace
     .replace(/\n\s*\n/g, '\n\n')
     .trim()
 }
 
-// Parse CSV (simple parser for Substack format)
+// Parse a single CSV line handling quoted values with embedded commas/newlines
+function parseCSVLine(line) {
+  const values = []
+  let current = ''
+  let inQuotes = false
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i]
+    if (char === '"') {
+      if (inQuotes && line[i + 1] === '"') {
+        current += '"'
+        i++
+      } else {
+        inQuotes = !inQuotes
+      }
+    } else if (char === ',' && !inQuotes) {
+      values.push(current)
+      current = ''
+    } else {
+      current += char
+    }
+  }
+  values.push(current)
+  return values
+}
+
+// Parse full CSV content into array of objects
 function parseCSV(content) {
   const lines = content.split('\n')
   if (lines.length === 0) return []
 
-  // Parse header
   const header = parseCSVLine(lines[0])
-  
-  // Parse rows
   const rows = []
   for (let i = 1; i < lines.length; i++) {
     if (lines[i].trim() === '') continue
@@ -70,34 +86,6 @@ function parseCSV(content) {
   return rows
 }
 
-// Parse a single CSV line (handles quoted values)
-function parseCSVLine(line) {
-  const values = []
-  let current = ''
-  let inQuotes = false
-  
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i]
-    
-    if (char === '"') {
-      if (inQuotes && line[i + 1] === '"') {
-        current += '"'
-        i++ // Skip next quote
-      } else {
-        inQuotes = !inQuotes
-      }
-    } else if (char === ',' && !inQuotes) {
-      values.push(current)
-      current = ''
-    } else {
-      current += char
-    }
-  }
-  values.push(current)
-  
-  return values
-}
-
 async function importSubstackPosts(zipPath) {
   const apiKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -108,98 +96,92 @@ async function importSubstackPosts(zipPath) {
     process.exit(1)
   }
 
-  // Create temp directory for extraction
   const tempDir = path.join(process.cwd(), '.substack-import-temp')
-  
+
   try {
-    // Clean up any previous temp directory
     if (fs.existsSync(tempDir)) {
       fs.rmSync(tempDir, { recursive: true })
     }
     fs.mkdirSync(tempDir)
 
-    // Extract ZIP
     console.log('Extracting ZIP file...')
     execSync(`unzip -q "${zipPath}" -d "${tempDir}"`)
 
-    // Find posts.csv
-    const csvPath = path.join(tempDir, 'posts.csv')
+    // posts.csv may be at the top level or inside a single subdirectory
+    let csvPath = path.join(tempDir, 'posts.csv')
+    let postsDir = path.join(tempDir, 'posts')
+    if (!fs.existsSync(csvPath)) {
+      const entries = fs.readdirSync(tempDir)
+      const subdir = entries.find(e => fs.statSync(path.join(tempDir, e)).isDirectory())
+      if (subdir) {
+        csvPath = path.join(tempDir, subdir, 'posts.csv')
+        postsDir = path.join(tempDir, subdir, 'posts')
+      }
+    }
+
     if (!fs.existsSync(csvPath)) {
       console.error('posts.csv not found in ZIP')
       process.exit(1)
     }
 
-    // Parse CSV
     const csvContent = fs.readFileSync(csvPath, 'utf-8')
-    const posts = parseCSV(csvContent)
+    const allPosts = parseCSV(csvContent)
+
+    // Only import published posts
+    const posts = allPosts.filter(p => p.is_published === 'true')
+    console.log(`Found ${posts.length} published posts out of ${allPosts.length} total`)
 
     if (posts.length === 0) {
-      console.error('No posts found in posts.csv')
-      process.exit(1)
+      console.log('No published posts to import.')
+      return
     }
 
-    console.log(`Found ${posts.length} posts to import`)
-
-    // Find posts directory
-    const postsDir = path.join(tempDir, 'posts')
-    const hasPostsDir = fs.existsSync(postsDir)
-
-    // Import Supabase client
     const { createClient } = await import('@supabase/supabase-js')
     const supabase = createClient(supabaseUrl, apiKey)
 
-    // Process each post
     let imported = 0
     let skipped = 0
 
     for (const post of posts) {
       try {
-        const title = post.title || post.subject || 'Untitled'
-        const slug = post.post_id || post.slug || ''
-        const postDate = post.post_date || post.published_at || new Date().toISOString()
-        
-        // Build the Substack URL
-        const url = slug 
-          ? `https://wpmcneill.substack.com/p/${slug}`
-          : ''
+        const title = post.title || 'Untitled'
+        const subtitle = post.subtitle || null
 
-        // Try to read HTML content
-        let content = post.subtitle || post.description || ''
-        
-        if (hasPostsDir && slug) {
-          // Look for HTML file
-          const htmlPath = path.join(postsDir, `${slug}.html`)
-          if (fs.existsSync(htmlPath)) {
-            const htmlContent = fs.readFileSync(htmlPath, 'utf-8')
-            content = htmlToText(htmlContent)
-          }
+        // post_id is "{numeric_id}.{slug}", e.g. "190009175.a-socratic-dialog-with-claude-code"
+        const postId = post.post_id || ''
+        const dotIndex = postId.indexOf('.')
+        const slug = dotIndex !== -1 ? postId.slice(dotIndex + 1) : postId
+        const url = slug ? `https://wpmcneill.substack.com/p/${slug}` : ''
+        const publishedAt = post.post_date || null
+
+        // HTML file is named {post_id}.html
+        let content = ''
+        const htmlPath = path.join(postsDir, `${postId}.html`)
+        if (fs.existsSync(htmlPath)) {
+          const htmlContent = fs.readFileSync(htmlPath, 'utf-8')
+          content = htmlToText(htmlContent)
         }
 
-        // Skip if no meaningful content
         if (!content || content.length < 10) {
-          console.log(`Skipping "${title}" (no content)`)
+          console.log(`Skipping "${title}" — no HTML content found`)
           skipped++
           continue
         }
 
         console.log(`Importing: "${title}"`)
 
-        // Check if post already exists
         const { data: existing } = await supabase
           .from('posts')
           .select('id')
-          .eq('url', url)
+          .eq('slug', slug)
           .single()
 
+        const record = { title, subtitle, content, url, slug, published_at: publishedAt }
+
         if (existing) {
-          // Update existing
           const { error } = await supabase
             .from('posts')
-            .update({
-              title,
-              content,
-              published_at: postDate,
-            })
+            .update(record)
             .eq('id', existing.id)
 
           if (error) {
@@ -209,39 +191,31 @@ async function importSubstackPosts(zipPath) {
             imported++
           }
         } else {
-          // Insert new
-          const { error } = await supabase.from('posts').insert({
-            title,
-            content,
-            url,
-            published_at: postDate,
-            embedding: null,
-          })
+          const { error } = await supabase
+            .from('posts')
+            .insert({ ...record, embedding: null })
 
           if (error) {
             console.error(`  Error inserting: ${error.message}`)
           } else {
-            console.log(`  Imported`)
+            console.log(`  Inserted`)
             imported++
           }
         }
-      } catch (error) {
-        console.error(`  Error processing post: ${error.message}`)
+      } catch (err) {
+        console.error(`  Error processing post: ${err.message}`)
       }
     }
 
     console.log('')
-    console.log(`Import complete! ${imported} imported, ${skipped} skipped.`)
-
+    console.log(`Import complete: ${imported} imported, ${skipped} skipped.`)
   } finally {
-    // Clean up temp directory
     if (fs.existsSync(tempDir)) {
       fs.rmSync(tempDir, { recursive: true })
     }
   }
 }
 
-// Get file path from command line args
 const zipPath = process.argv[2]
 if (!zipPath) {
   console.error('Usage: node scripts/import-substack.js <path-to-substack-export.zip>')
