@@ -21,6 +21,8 @@ main {
   border: 1px solid #d5cec5;
   padding: 3.6rem;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .ornament {
@@ -57,7 +59,7 @@ strong {
 }
 
 .links {
-  margin-top: 2rem;
+  margin-top: auto;
   padding-top: 1.5rem;
   border-top: 1px solid #e5e0d9;
   text-align: center;
