@@ -2,7 +2,7 @@
 
 import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport } from 'ai'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import styles from './chat.module.css'
 
@@ -16,11 +16,32 @@ export function ChatInterface() {
     el.style.height = 'auto'
     el.style.height = `${el.scrollHeight}px`
   }
+
+  const SESSION_KEY = 'steph-chat-messages'
+
+  const savedMessages =
+    typeof window !== 'undefined'
+      ? (() => {
+          try {
+            return JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null')
+          } catch {
+            return null
+          }
+        })()
+      : null
+
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       api: '/api/chat',
     }),
+    initialMessages: savedMessages ?? undefined,
   })
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(messages))
+    }
+  }, [messages])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
