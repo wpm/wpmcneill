@@ -91,11 +91,16 @@ export async function POST(request: Request) {
 
     // Log user message
     const userMessage = messages[messages.length - 1]
-    if (userMessage?.text) {
+    const userText =
+      userMessage?.parts
+        ?.filter((p: { type: string }) => p.type === 'text')
+        .map((p: { type: string; text: string }) => p.text)
+        .join('') || ''
+    if (userText) {
       await supabase.from('messages').insert({
         conversation_id: conversationId,
         role: 'user',
-        content: userMessage.text,
+        content: userText,
         created_at: now.toISOString(),
       })
     }
@@ -104,7 +109,7 @@ export async function POST(request: Request) {
     const convertedMessages = await convertToModelMessages(messages)
 
     // Retrieve relevant Corner Cases posts for RAG
-    const postContext = userMessage?.text ? await retrieveRelevantPosts(userMessage.text) : null
+    const postContext = userText ? await retrieveRelevantPosts(userText) : null
     const systemPrompt = buildSystemPrompt(postContext ?? undefined)
 
     // Stream response with logging
