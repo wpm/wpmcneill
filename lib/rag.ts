@@ -1,10 +1,10 @@
 import { embed } from 'ai'
 import { createVoyage } from 'voyage-ai-provider'
 import { createClient } from '@/lib/supabase/server'
+import { RAG_SIMILARITY_THRESHOLD } from '@/lib/config'
 
 const MAX_POSTS = 3
 const MAX_CONTENT_CHARS = 2000
-const SIMILARITY_THRESHOLD = 0.7
 
 const voyage = createVoyage({ apiKey: process.env.VOYAGE_API_KEY })
 
@@ -30,7 +30,7 @@ export async function retrieveRelevantPosts(query: string): Promise<string | nul
     const supabase = await createClient()
     const { data: posts, error } = await supabase.rpc('search_posts', {
       query_embedding: embedding,
-      match_threshold: SIMILARITY_THRESHOLD,
+      match_threshold: RAG_SIMILARITY_THRESHOLD,
       match_count: MAX_POSTS,
     })
 

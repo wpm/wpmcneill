@@ -15,6 +15,8 @@ const getEnvNumber = (key: string, defaultValue: number): number => {
   return value ? parseInt(value, 10) : defaultValue
 }
 
+export const RAG_SIMILARITY_THRESHOLD = parseFloat(process.env.STEPH_RAG_SIMILARITY_THRESHOLD || '0.4')
+
 export const config = {
   // ============================================
   // LLM Model Settings

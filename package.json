@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:debug": "DEBUG_SYSTEM_PROMPT=1 next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
