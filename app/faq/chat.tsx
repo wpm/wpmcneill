@@ -36,9 +36,7 @@ export function ChatInterface() {
         {messages.map((message, idx) => (
           <div
             key={idx}
-            className={`${styles.message} ${
-              message.role === 'user' ? styles.userMessage : styles.assistantMessage
-            }`}
+            className={`${styles.message} ${message.role === 'user' ? styles.userMessage : styles.assistantMessage}`}
           >
             <div className={styles.messageContent}>
               {message.parts
@@ -68,11 +66,7 @@ export function ChatInterface() {
           disabled={status === 'streaming'}
           className={styles.input}
         />
-        <button
-          type="submit"
-          disabled={status === 'streaming' || !input.trim()}
-          className={styles.button}
-        >
+        <button type="submit" disabled={status === 'streaming' || !input.trim()} className={styles.button}>
           Send
         </button>
       </form>
