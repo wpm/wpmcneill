@@ -33,7 +33,7 @@ export const config = {
    *
    * Environment variable: STEPH_MODEL
    */
-  model: getEnvString('STEPH_MODEL', 'openai/gpt-4o-mini'),
+  model: getEnvString('STEPH_MODEL', 'anthropic/claude-opus-4.6'),
 
   /**
    * Temperature controls randomness (0.0 - 2.0)
