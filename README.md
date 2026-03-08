@@ -12,14 +12,14 @@ Personal website with Steph, an AI FAQ assistant.
 
 All settings are configured via environment variables. Set these in your Vercel project settings under **Vars**.
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `STEPH_MODEL` | `openai/gpt-4o-mini` | LLM model to use |
-| `STEPH_TEMPERATURE` | `7` | Response randomness (0-20, divided by 10) |
-| `STEPH_MAX_TOKENS` | `1024` | Max tokens per response |
-| `STEPH_RATE_LIMIT_MAX` | `10` | Requests allowed per window |
-| `STEPH_RATE_LIMIT_WINDOW_SECONDS` | `60` | Rate limit window in seconds |
-| `STEPH_CONVERSATION_TIMEOUT_MS` | `3600000` | Conversation grouping timeout (1 hour) |
+| Variable                          | Default              | Description                               |
+| --------------------------------- | -------------------- | ----------------------------------------- |
+| `STEPH_MODEL`                     | `openai/gpt-4o-mini` | LLM model to use                          |
+| `STEPH_TEMPERATURE`               | `7`                  | Response randomness (0-20, divided by 10) |
+| `STEPH_MAX_TOKENS`                | `1024`               | Max tokens per response                   |
+| `STEPH_RATE_LIMIT_MAX`            | `10`                 | Requests allowed per window               |
+| `STEPH_RATE_LIMIT_WINDOW_SECONDS` | `60`                 | Rate limit window in seconds              |
+| `STEPH_CONVERSATION_TIMEOUT_MS`   | `3600000`            | Conversation grouping timeout (1 hour)    |
 
 ### Model Options
 
@@ -37,12 +37,14 @@ google/gemini-3-flash           # Fast Google model
 Set different values per environment in Vercel:
 
 **Preview:** Cheaper model, relaxed rate limiting for testing
+
 ```
 STEPH_MODEL = openai/gpt-4o-mini
 STEPH_RATE_LIMIT_MAX = 100
 ```
 
 **Production:** Better model, strict rate limiting
+
 ```
 STEPH_MODEL = openai/gpt-4o
 STEPH_RATE_LIMIT_MAX = 10
@@ -65,6 +67,7 @@ npm run import-substack path/to/your-substack-export.zip
 ```
 
 The script:
+
 - Extracts the ZIP to a temp directory
 - Parses post metadata from `posts.csv`
 - Reads full content from HTML files in `posts/`
