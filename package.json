@@ -9,10 +9,12 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "import-substack": "env $(grep -v '^#' .env.local | grep '=' | sed 's/\"//g' | xargs) node scripts/import-substack.js",
+    "generate-embeddings": "env $(grep -v '^#' .env.local | grep '=' | sed 's/\"//g' | xargs) node scripts/generate-embeddings.js",
     "prepare": "husky"
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.41",
+    "voyage-ai-provider": "^3.0.0",
     "@ai-sdk/react": "^3.0.0",
     "@supabase/ssr": "^0.4.0",
     "@supabase/supabase-js": "^2.45.0",
