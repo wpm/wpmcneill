@@ -170,11 +170,7 @@ async function importSubstackPosts(zipPath) {
 
         console.log(`Importing: "${title}"`)
 
-        const { data: existing } = await supabase
-          .from('posts')
-          .select('id')
-          .eq('slug', slug)
-          .single()
+        const { data: existing } = await supabase.from('posts').select('id').eq('slug', slug).single()
 
         const record = { title, subtitle, content, url, slug, published_at: publishedAt }
 
