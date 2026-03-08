@@ -111,7 +111,7 @@ export async function POST(request: Request) {
       system: systemPrompt,
       messages: convertedMessages,
       temperature: config.temperature,
-      maxTokens: config.maxTokens,
+      maxOutputTokens: config.maxOutputTokens,
       onFinish: async ({ text }) => {
         // Log assistant message after stream completes
         try {
